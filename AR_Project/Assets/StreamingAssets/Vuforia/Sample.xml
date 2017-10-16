@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
-  <Tracking>
-    <ImageTarget name="white" size="50.000000 31.250000" />
-    <ImageTarget name="sample2" size="50.000000 50.742214" />
-    <ImageTarget name="markerSample" size="50.000000 50.215984" />
-  </Tracking>
-</QCARConfig>
