@@ -1,31 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine.UI;
 using UnityEngine;
 
 public class TapManager : MonoBehaviour
 {
-    [SerializeField]
-    private float _rate = 1;
-    private float _rot = -90;
 
     [SerializeField]
     private float _distance = 100;
 
-    private bool _isTouches = false;
+    [SerializeField]
+    private Text[] _text = null;
+
+    private Vector2 _Screen;               //スクリーンサイズ（横、縦）
+
+    private GameObject _target = null;
 
     [SerializeField]
-    private float _rotationSpeed;
-
-    [SerializeField]
-    private float _minAngle = 0.0f,
-                  _maxAngle = 90.0f;
-
-    private Vector2 _startLocation;     //タップ開始時にのポジション
-    private Quaternion _startRotation;  //タップ開始時の回転角度
-
-    private Vector2 _velocity;          //移動量
-    private float _width,               //スクリーンサイズ（横、縦）
-                  _height;
+    private bool _DispStatus = false;
 
     enum TapType
     {
@@ -36,8 +26,8 @@ public class TapManager : MonoBehaviour
 
     void Start()
     {
-        _width = Screen.width;
-        _height = Screen.height;
+        _Screen.x = Screen.width;
+        _Screen.y = Screen.height;
     }
 
     void Update()
@@ -50,49 +40,71 @@ public class TapManager : MonoBehaviour
         else if (Input.touchCount >= 2)
         {
             // マルチタップ
+            MultiTapEvent();
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("タップされました");
-            
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit = new RaycastHit();
             if (Physics.Raycast(ray, out hit, _distance))
             {
-                var obj = hit.collider.gameObject;
-                obj.GetComponent<Renderer>().material.color = new Color(Random.Range(0.0f, 1.0f),
+                _target = hit.collider.gameObject;
+				_target.GetComponent<ObjectBase>().MouseButtonDown();
+				_target.GetComponent<Renderer>().material.color = new Color(Random.Range(0.0f, 1.0f),
                                                                         Random.Range(0.0f, 1.0f),
-                                                                        Random.Range(0.0f, 1.0f));
-                Debug.Log(obj);
-            }
+                                                                            Random.Range(0.0f, 1.0f));
+			}
+        }
+
+        // 選択したオブジェクトの情報を出力する
+        if( _target && _DispStatus )
+        {
+            // TODO:
+            var pos = _target.transform.position;
+
+            _text[0].text = "Pos\n" +
+                            "x:" + Mathf.Round(_target.transform.localPosition.x).ToString() + 
+                            "y:" + Mathf.Round(_target.transform.localPosition.y).ToString() + 
+                            "z:" + Mathf.Round(_target.transform.localPosition.z).ToString();
         }
     }
 
+    // シングルタップイベント
     void SingleTapEvent()
     {
         //回転
         var touch = Input.GetTouch(0);
         var ray = Camera.main.ScreenPointToRay(touch.position);
         var hit = new RaycastHit();
+
         if (Physics.Raycast(ray, out hit, _distance))
         {
-            var obj = hit.collider.gameObject;
-            if (touch.phase == TouchPhase.Began)
+            _target = hit.collider.gameObject;
+         
+            switch (touch.phase)
             {
-                _startLocation = touch.position;
-                _startRotation = obj.transform.rotation;
-            }
-            else if (touch.phase == TouchPhase.Moved)
-            {
-                _velocity.x = (touch.position.x - _startLocation.x) / _width;
-                _velocity.y = (touch.position.y - _startLocation.y) / _height;
-                obj.transform.rotation = _startRotation;
-                obj.transform.Rotate(new Vector3(0, (_rot * _rate) * _velocity.x, 0), Space.World);
+                case TouchPhase.Began:
+                    
+                    _target.GetComponent<ObjectBase>().TouchBegan(touch, _Screen);
+                    Debug.Log(_target.GetType());
+            
+                    break;
+                case TouchPhase.Moved:
+                    Debug.Log("Moved");
+                    _target.GetComponent<ObjectBase>().TouchMove(touch);
+
+                    break;
+                case TouchPhase.Ended:
+
+                    _target.GetComponent<ObjectBase>().TouchEnded(touch);
+
+                    break;
             }
         }
     }
 
+    // マルチタップイベント
     void MultiTapEvent()
     {
 		//TODO: マルチタップの処理を記述する
