@@ -8,3 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Game/Scenes/sample.unity
     guid: 3ed2e265022124630a6a52f32e647047
+  - enabled: 1
+    path: Assets/Game/Scenes/gravitySample.unity
+    guid: 730965e48cf0942a794719f049472503
