@@ -1,11 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class sample : MonoBehaviour
 {
 	[SerializeField]
 	private float distance = 100;
+
+    [SerializeField]
+    private Vector3 _targetAngle;
+
+    [SerializeField]
+    private Text _text = null;
 
     void Start()
     {
@@ -14,21 +21,11 @@ public class sample : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("is touch");
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit = new RaycastHit();
-
-            if (Physics.Raycast(ray, out hit, distance))
-            {
-                var obj = hit.collider.gameObject;
-                if (obj)
-                {
-                    obj.GetComponent<Renderer>().material.color = new Color(1, 0, 0, 1);
-                }
-
-            }
-        }
+        _text.text = this.transform.localEulerAngles.ToString();
+            
+		if (Mathf.DeltaAngle(transform.localEulerAngles.y, _targetAngle.y) < -0.1f)
+		{
+            transform.Rotate(new Vector3(0f, -5f, 0f),Space.World);
+		}
     }
 }

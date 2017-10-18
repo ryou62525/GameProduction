@@ -18,6 +18,8 @@ public class TestObject : ObjectBase
     [SerializeField]
     private Text _text = null;
 
+    private GameObject _childObj = null;
+
     void Start()
     {
        
@@ -27,8 +29,8 @@ public class TestObject : ObjectBase
     {
 		StartCoroutine(UnlockObject());
         _text.GetComponent<Text>().text = transform.localRotation.eulerAngles.ToString();
-        Debug.Log("ワールド角度" + transform.eulerAngles);
-        Debug.Log("ローカル角度" + transform.localEulerAngles);
+        //Debug.Log("ワールド角度" + transform.eulerAngles);
+        //Debug.Log("ローカル角度" + transform.localEulerAngles);
     }
 
     IEnumerator UnlockObject()
@@ -57,8 +59,10 @@ public class TestObject : ObjectBase
         Debug.Log(this.name);
         Debug.Log("タッチしました");
 
-        _ScreenSize = screenSize;
+        var obj = gameObject.GetComponentInChildren<Transform>();
+        Debug.Log("回転角度" + obj.rotation);
 
+        _ScreenSize = screenSize;
         _startLocation = touch.position;
         _startRotation = this.transform.rotation;
     }
