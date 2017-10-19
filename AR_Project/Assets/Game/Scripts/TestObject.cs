@@ -8,7 +8,7 @@ public class TestObject : ObjectBase
     private float _rate = 1;
     private float _rot = -90;
 
-    private Vector2 _startLocation;     //タップ開始時にのポジション
+    private Vector2 _startLocation;     //タップ開始時のポジション
     private Quaternion _startRotation;  //タップ開始時の回転角度
 
     private Vector2 _velocity;          //移動量
@@ -22,12 +22,12 @@ public class TestObject : ObjectBase
 
     void Start()
     {
-       
+
     }
 
     void Update()
     {
-		StartCoroutine(UnlockObject());
+        StartCoroutine(UnlockObject());
         _text.GetComponent<Text>().text = transform.localRotation.eulerAngles.ToString();
         //Debug.Log("ワールド角度" + transform.eulerAngles);
         //Debug.Log("ローカル角度" + transform.localEulerAngles);
@@ -36,6 +36,10 @@ public class TestObject : ObjectBase
     IEnumerator UnlockObject()
     {
         var startAngle = transform.localRotation.eulerAngles.y;
+        //if (isTargetAngleY())
+        {
+
+        }
 
         while (true)
         {
@@ -82,6 +86,15 @@ public class TestObject : ObjectBase
 	public override void TouchMove(Touch touch)
     {
         base.TouchMove(touch);
+
+        if (IsTargetAngleY(_targetAngle.y, this.transform))
+        {
+            Debug.Log("ロック解除");
+        }
+        else
+        {
+            Debug.Log("ロック中");
+        }
 
         _velocity.x = (touch.position.x - _startLocation.x) / _ScreenSize.x;
         _velocity.y = (touch.position.y - _startLocation.y) / _ScreenSize.y;
