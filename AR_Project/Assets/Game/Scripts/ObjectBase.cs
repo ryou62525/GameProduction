@@ -54,10 +54,10 @@ public class ObjectBase : MonoBehaviour
 	/// <returns><c>true</c>, if target angle y was ised, <c>false</c> otherwise.</returns>
 	/// <param name="targetEulerAngleY">Target euler angle y.</param>
 	/// <param name="thisTransform">This transform.</param>
-	public bool IsTargetAngleY(float targetEulerAngleY, Transform thisTransform)
+	public bool IsTargetAngleY(float targetEulerAngleY, Transform thisTransform, float diff)
 	{
-        var from = targetEulerAngleY - 10;
-        var to = targetEulerAngleY + 10;
+        var from = targetEulerAngleY - diff;
+        var to = targetEulerAngleY + diff;
 		if (from <= thisTransform.localEulerAngles.y && to >= thisTransform.localEulerAngles.y) return true;
 		return false;
 	}

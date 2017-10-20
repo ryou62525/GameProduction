@@ -87,7 +87,8 @@ public class TestObject : ObjectBase
     {
         base.TouchMove(touch);
 
-        if (IsTargetAngleY(_targetAngle.y, this.transform))
+        //TODO: マジックナンバーを消す
+        if (IsTargetAngleY(_targetAngle.y, this.transform, 10))
         {
             Debug.Log("ロック解除");
         }
