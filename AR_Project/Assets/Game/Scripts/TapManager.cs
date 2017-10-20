@@ -50,7 +50,7 @@ public class TapManager : MonoBehaviour
             if (Physics.Raycast(ray, out hit, _distance))
             {
                 _target = hit.collider.gameObject;
-				_target.GetComponent<ObjectBase>().MouseButtonDown();
+				_target.GetComponent<Touchable>().MouseButtonDown();
 				_target.GetComponent<Renderer>().material.color = new Color(Random.Range(0.0f, 1.0f),
                                                                         Random.Range(0.0f, 1.0f),
                                                                             Random.Range(0.0f, 1.0f));
@@ -86,18 +86,18 @@ public class TapManager : MonoBehaviour
             {
                 case TouchPhase.Began:
                     
-                    _target.GetComponent<ObjectBase>().TouchBegan(touch, _Screen);
+                    _target.GetComponent<Touchable>().TouchBegan(touch, _Screen);
                     Debug.Log(_target.GetType());
             
                     break;
                 case TouchPhase.Moved:
                     Debug.Log("Moved");
-                    _target.GetComponent<ObjectBase>().TouchMove(touch);
+                    _target.GetComponent<Touchable>().TouchMove(touch);
 
                     break;
                 case TouchPhase.Ended:
 
-                    _target.GetComponent<ObjectBase>().TouchEnded(touch);
+                    _target.GetComponent<Touchable>().TouchEnded(touch);
 
                     break;
             }

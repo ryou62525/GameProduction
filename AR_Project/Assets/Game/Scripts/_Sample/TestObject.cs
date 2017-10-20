@@ -2,11 +2,14 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class TestObject : ObjectBase
+public class TestObject : Touchable
 {
     [SerializeField]
     private float _rate = 1;
     private float _rot = -90;
+
+    [SerializeField]
+    private float _difference = 0;      //補正する値
 
     private Vector2 _startLocation;     //タップ開始時のポジション
     private Quaternion _startRotation;  //タップ開始時の回転角度
@@ -69,6 +72,8 @@ public class TestObject : ObjectBase
         _ScreenSize = screenSize;
         _startLocation = touch.position;
         _startRotation = this.transform.rotation;
+        Debug.Log("StartRotation" + _startRotation.eulerAngles);
+
     }
 
     /// <summary>
@@ -86,9 +91,9 @@ public class TestObject : ObjectBase
 	public override void TouchMove(Touch touch)
     {
         base.TouchMove(touch);
+        var isTargetAngle = GameUtils.IsTargetAngleY(_targetAngle.y, this.transform, _difference);
 
-        //TODO: マジックナンバーを消す
-        if (IsTargetAngleY(_targetAngle.y, this.transform, 10))
+        if (isTargetAngle )
         {
             Debug.Log("ロック解除");
         }

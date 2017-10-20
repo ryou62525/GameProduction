@@ -11,6 +11,7 @@ public class GameUtils : MonoBehaviour
 	/// <returns><c>true</c>, if target angle y was ised, <c>false</c> otherwise.</returns>
 	/// <param name="targetEulerAngleY">Target euler angle y.</param>
 	/// <param name="thisTransform">This transform.</param>
+	/// <param name="diff">Diff.</param>
 	public static bool IsTargetAngleY(float targetEulerAngleY, Transform thisTransform, float diff)
 	{
 		var from = targetEulerAngleY - diff;
