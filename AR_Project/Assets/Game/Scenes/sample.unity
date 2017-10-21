@@ -153,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _targetAngle: {x: 0, y: 45, z: 0}
   _rate: 1
+  _difference: 10
   _text: {fileID: 1716094227}
 --- !u!23 &675566008
 MeshRenderer:

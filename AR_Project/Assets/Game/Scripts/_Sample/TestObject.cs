@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class TestObject : Touchable
+public class TestObject : ITouchable
 {
     [SerializeField]
     private float _rate = 1;
@@ -30,29 +30,9 @@ public class TestObject : Touchable
 
     void Update()
     {
-        StartCoroutine(UnlockObject());
         _text.GetComponent<Text>().text = transform.localRotation.eulerAngles.ToString();
         //Debug.Log("ワールド角度" + transform.eulerAngles);
         //Debug.Log("ローカル角度" + transform.localEulerAngles);
-    }
-
-    IEnumerator UnlockObject()
-    {
-        var startAngle = transform.localRotation.eulerAngles.y;
-        //if (isTargetAngleY())
-        {
-
-        }
-
-        while (true)
-        {
-            if (startAngle >= startAngle + 180)
-            {
-                Debug.Log("解除されました");
-                yield break;
-            }
-            yield return null;
-        }
     }
 
     /// <summary>
@@ -73,7 +53,6 @@ public class TestObject : Touchable
         _startLocation = touch.position;
         _startRotation = this.transform.rotation;
         Debug.Log("StartRotation" + _startRotation.eulerAngles);
-
     }
 
     /// <summary>
@@ -93,9 +72,12 @@ public class TestObject : Touchable
         base.TouchMove(touch);
         var isTargetAngle = GameUtils.IsTargetAngleY(_targetAngle.y, this.transform, _difference);
 
-        if (isTargetAngle )
+        Debug.Log("回転方向" + GameUtils.IsWhichDirection(_velocity.x));
+
+        if ( GameUtils.IsWhichDirection(_velocity.x) == (int)GameUtils.RotDir.RIGHT && isTargetAngle )
         {
             Debug.Log("ロック解除");
+            this.GetComponent<Renderer>().material.color = new Color(1, 0, 0, 0.5f);
         }
         else
         {
@@ -106,6 +88,7 @@ public class TestObject : Touchable
         _velocity.y = (touch.position.y - _startLocation.y) / _ScreenSize.y;
         this.transform.rotation = _startRotation;
         this.transform.Rotate(new Vector3(0, (_rot * _rate) * _velocity.x, 0), Space.World);
+        Debug.Log("X" + _velocity.x);
     }
 
     /// <summary>
@@ -116,5 +99,6 @@ public class TestObject : Touchable
     {
         base.TouchEnded(touch);
         Debug.Log("TouchEnded");
+        //_startRotation = Quaternion.identity;
     }
 }

@@ -2,10 +2,10 @@
 
 /// <summary>
 /// 操作可能なオブジェクトを新しく作るときは
-/// このクラスを継承させ、オーバーライドさせる。
+/// このクラスを継承させ、オーバーライドさせてください
 /// </summary>
 
-public class Touchable : MonoBehaviour
+public class ITouchable : MonoBehaviour
 {
     [SerializeField]
     public Vector3 _targetAngle;
